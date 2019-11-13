@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, View, FlatList, ScrollView, Dimensions, StyleSheet} from 'react-native';
-import { gStyle } from '../constants';
+import { Text, View, FlatList, ScrollView, Share, Dimensions, StyleSheet, Button, AsyncStorage } from 'react-native';
+import { gStyle, fonts, colors, func } from '../constants';
+import * as FileSystem from 'expo-file-system';
 
 // components
 import Normalize from '../components/Normalize';
@@ -11,6 +11,17 @@ const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 class ModalData extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      data: []
+    }
+  }
+
+  componentDidMount = async () => {
+    this.setState({data: this.props.navigation.getParam("data", null)})
+
+    const uniqueDataEnabled = JSON.parse(await AsyncStorage.getItem('uniqueDataEnabled'));
+    if (uniqueDataEnabled)
+      this.setState({data: func.convertUniqueArray(this.state.data)})
   }
 
   renderItem = ({ item, index }) => {
@@ -29,13 +40,47 @@ class ModalData extends React.Component {
     )
   }
 
+  onShare = async () => {
+    var csvStringFormat = func.convertStringCSV(this.state.data);
+
+    const uri = FileSystem.cacheDirectory + Date.now() + ".csv";
+    await FileSystem.writeAsStringAsync(
+      uri,
+      csvStringFormat,
+      { encoding:FileSystem.EncodingType.UTF8 }
+    );
+    const result = await Share.share({
+      url: uri,
+    }); 
+
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+    
+  }
+
   render() {
     const { navigation } = this.props;
-    const data = navigation.getParam("data", null);
+    const { data } = this.state;
     return (
       <View style={gStyle.container}>
         <ModalHeader navigation={navigation} text="Data"/>
-        <Text> Count: {data.length}</Text>
+        <View style={styles.subHeader}>
+          <View style={styles.subHeaderView}>
+            {data.length > 0 &&
+              <Button style={styles.countText} onPress={this.onShare} title="Export CSV" />
+            }
+          </View>
+          <View style={styles.subHeaderView}>
+            <Text style={styles.countText}>Count: {data.length}</Text>
+          </View>
+        </View>
         <ScrollView style={gStyle.p24}>
             <FlatList
               data={data}
@@ -63,10 +108,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#ffffff"
   },
+  subHeader: {
+    flexDirection:'row'
+  },
+  subHeaderView: {
+    flex:0.5
+  },
+  countText: {
+    color: colors.black50,
+    fontFamily: fonts.sansProMedium,
+    fontSize: 24,
+    paddingHorizontal: 6,
+    paddingVertical: 6,
+    textAlign: 'center'
+  },
 });
-
-ModalData.propTypes = {
-  navigation: PropTypes.object.isRequired
-};
 
 export default ModalData;

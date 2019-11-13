@@ -31,8 +31,32 @@ const loadAssetsAsync = async () => {
   return Promise.all([...fontAssets, ...imageAssets]);
 };
 
+const convertUniqueArray = array => {
+  return array.filter((point, index) => {
+    const _point = JSON.stringify(point);
+    return index === array.findIndex(obj => {
+      return JSON.stringify(obj) === _point;
+    });
+  });
+}
+
+const convertStringCSV = array => {
+  var csvstring = "";
+  var csvstringColumn = "Timestamp,Latitude,Longitude,Altitude,Accuracy,Speed\n";
+  csvstring += csvstringColumn;
+  array.forEach((item) => {
+    csvstring = csvstring + item.timestamp + "," +
+                item.coords.latitude + "," + item.coords.longitude + "," +
+                item.coords.altitude + "," + item.coords.accuracy + "," +
+                item.coords.speed + "\n";
+  });
+  return csvstring;
+}
+
 export default {
   cacheFonts,
   cacheImages,
-  loadAssetsAsync
+  loadAssetsAsync,
+  convertUniqueArray,
+  convertStringCSV
 };

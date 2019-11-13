@@ -99,7 +99,7 @@ class Home extends React.Component {
 
     if(!this.state.recordStatus) {
       this.setState({coords: [], recordData: []})
-      this._interval = setInterval(() => { this.triggerRecord(); }, 500);
+      this._interval = setInterval(() => { this.triggerRecord(); }, 1000);
     }
     else { 
       clearInterval(this._interval);
