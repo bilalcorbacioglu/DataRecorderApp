@@ -122,7 +122,7 @@ class Home extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { type, selectType, showMap, userLat, userLon, coords } = this.state;
+    const { type, selectType, showMap, userLat, userLon, coords, recordStatus, recordData } = this.state;
 
     return (
       <View style={gStyle.container}>
@@ -171,7 +171,7 @@ class Home extends React.Component {
               onPress={() => navigation.navigate('ModalSettings')}
               style={[styles.icon, styles.iconSettings]}
             />
-            {!this.state.recordStatus ? 
+            {!recordStatus ? 
             <TouchIcon
               icon={<MaterialIcons style={{alignItems: 'center', textAlign: 'center'}} name="play-arrow" color="white" />}
               iconSize={20}
@@ -189,7 +189,7 @@ class Home extends React.Component {
             <TouchIcon
               icon={<Feather style={{alignItems: 'center', textAlign: 'center'}} name="database" color="white" />}
               iconSize={20}
-              onPress={() => this.props.navigation.navigate('ModalData', {data: this.state.recordData.reverse()})}
+              onPress={() => this.props.navigation.navigate('ModalData', {data: recordData.reverse(), recordStatus: recordStatus})}
               style={[styles.icon, styles.iconShowData]}
             />
           </View>

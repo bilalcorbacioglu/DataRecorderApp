@@ -6,6 +6,7 @@ import * as FileSystem from 'expo-file-system';
 // components
 import Normalize from '../components/Normalize';
 import ModalHeader from '../components/ModalHeader';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 
 class ModalData extends React.Component {
@@ -17,7 +18,10 @@ class ModalData extends React.Component {
   }
 
   componentDidMount = async () => {
-    this.setState({data: this.props.navigation.getParam("data", null)})
+    this.setState({
+      data: this.props.navigation.getParam("data", null),
+      recordStatus: this.props.navigation.getParam("recordStatus",null),
+    })
 
     const uniqueDataEnabled = JSON.parse(await AsyncStorage.getItem('uniqueDataEnabled'));
     if (uniqueDataEnabled)
@@ -67,14 +71,20 @@ class ModalData extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { data } = this.state;
+    const { data, recordStatus } = this.state;
     return (
       <View style={gStyle.container}>
         <ModalHeader navigation={navigation} text="Data"/>
         <View style={styles.subHeader}>
           <View style={styles.subHeaderView}>
             {data.length > 0 &&
-              <Button style={styles.countText} onPress={this.onShare} title="Export CSV" />
+              <TouchableOpacity onPress={this.onShare}><Text style={styles.countText}>Export</Text></TouchableOpacity>
+            }
+          </View>
+          <View style={styles.subHeaderView}>
+            {!recordStatus && data.length > 0 ?
+              <TouchableOpacity onPress={this.onShare}><Text style={styles.countText}>Save</Text></TouchableOpacity> 
+              : <View/>
             }
           </View>
           <View style={styles.subHeaderView}>
@@ -112,12 +122,12 @@ const styles = StyleSheet.create({
     flexDirection:'row'
   },
   subHeaderView: {
-    flex:0.5
+    flex: 0.3
   },
   countText: {
     color: colors.black50,
     fontFamily: fonts.sansProMedium,
-    fontSize: 24,
+    fontSize: 20,
     paddingHorizontal: 6,
     paddingVertical: 6,
     textAlign: 'center'

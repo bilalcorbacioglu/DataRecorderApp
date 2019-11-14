@@ -25,7 +25,7 @@ class ModalSettings extends React.Component {
     const {navigation} = this.props;
     return(
       <View style={gStyle.container}>
-        <ModalHeader navigation={navigation} text="Map Settings"/>
+        <ModalHeader navigation={navigation} text="Settings"/>
         <View style={{
               flexDirection: "row",
               paddingTop: "3%",
