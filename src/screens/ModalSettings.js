@@ -32,10 +32,10 @@ class ModalSettings extends React.Component {
               paddingHorizontal: "3%",
               alignItems: "center"
             }}>
-          <View style={{flex:0.5}}>
-            <Text style={{ fontSize: 18 }}>Unique Data</Text>
+          <View style={{flex:0.8}}>
+            <Text style={{ fontSize: 18 }}>Unique Data (By location)</Text>
           </View>
-          <View style={{flex:0.5}}>
+          <View style={{flex:0.2,alignItems:'flex-end'}}>
             <Switch
               onValueChange={value => {
                 this.changeAsyncStorage(

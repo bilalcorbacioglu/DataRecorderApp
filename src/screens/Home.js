@@ -51,7 +51,7 @@ class Home extends React.Component {
       userLon: null,
       recordData: [],
       recordStatus: false,
-      coords: [],
+      accelerometerData: null,
     };
 
     this.toggleTypeModal = this.toggleTypeModal.bind(this);
@@ -100,8 +100,11 @@ class Home extends React.Component {
     }))
 
     if(!this.state.recordStatus) {
-      this.setState({coords: [], recordData: []})
-      this._interval = setInterval(() => { this.triggerRecord(); }, 1000);
+      this.setState({recordData: []});
+      Accelerometer.setUpdateInterval(1000);
+      this._interval = setInterval(() => { 
+        this.triggerRecord();
+      }, 1000);
     }
     else { 
       clearInterval(this._interval);
@@ -109,15 +112,21 @@ class Home extends React.Component {
   }
 
   triggerRecord = async () => {
-    let currentLocation = await Location.getCurrentPositionAsync();
+    let currentData = await Location.getCurrentPositionAsync();
+    
+    this._subscription = Accelerometer.addListener(accelerometerData => {
+      this.setState({accelerometerData: accelerometerData})
+      Accelerometer.removeAllListeners()
+    });
+    currentData.accelerometerData = this.state.accelerometerData;
     this.setState(prevState => ({
-      recordData: [...prevState.recordData, currentLocation]
+      recordData: [...prevState.recordData, currentData]
     }))
   }
 
   render() {
     const { navigation } = this.props;
-    const { type, selectType, showMap, userLat, userLon, coords, recordStatus, recordData } = this.state;
+    const { type, selectType, showMap, userLat, userLon, recordStatus, recordData } = this.state;
 
     return (
       <View style={gStyle.container}>

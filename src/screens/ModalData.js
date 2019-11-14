@@ -13,7 +13,8 @@ class ModalData extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      exportOrSaveEnabled: false,
     }
   }
 
@@ -45,6 +46,7 @@ class ModalData extends React.Component {
   }
 
   onShare = async () => {
+    this.setState({exportOrSaveEnabled: true})
     var csvStringFormat = func.convertStringCSV(this.state.data);
 
     const uri = FileSystem.cacheDirectory + Date.now() + ".csv";
@@ -53,6 +55,8 @@ class ModalData extends React.Component {
       csvStringFormat,
       { encoding:FileSystem.EncodingType.UTF8 }
     );
+    this.setState({exportOrSaveEnabled: false})
+    
     const result = await Share.share({
       url: uri,
     }); 
@@ -71,19 +75,19 @@ class ModalData extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { data, recordStatus } = this.state;
+    const { data, recordStatus, exportOrSaveEnabled } = this.state;
     return (
       <View style={gStyle.container}>
         <ModalHeader navigation={navigation} text="Data"/>
         <View style={styles.subHeader}>
           <View style={styles.subHeaderView}>
             {data.length > 0 &&
-              <TouchableOpacity onPress={this.onShare}><Text style={styles.countText}>Export</Text></TouchableOpacity>
+              <TouchableOpacity disabled={exportOrSaveEnabled} onPress={this.onShare}><Text style={styles.countText}>{exportOrSaveEnabled ? "Wait ..." : "Export"}</Text></TouchableOpacity>
             }
           </View>
           <View style={styles.subHeaderView}>
             {!recordStatus && data.length > 0 ?
-              <TouchableOpacity onPress={this.onShare}><Text style={styles.countText}>Save</Text></TouchableOpacity> 
+              <TouchableOpacity disabled={exportOrSaveEnabled} onPress={this.onShare}><Text style={styles.countText}>{exportOrSaveEnabled ? "Wait ..." : "Save"}</Text></TouchableOpacity> 
               : <View/>
             }
           </View>
