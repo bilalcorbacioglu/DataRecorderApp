@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Linking, StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import MapView from 'react-native-maps';
 import PropTypes from 'prop-types';
 import { Feather, MaterialIcons } from "@expo/vector-icons";
@@ -20,7 +20,7 @@ import Information from '../components/Information';
 import SvgMenu from '../components/icons/Svg.Menu';
 
 const { PROVIDER_GOOGLE } = MapView;
-
+const timePeriod = 2000;
 const types = {
   car: {
     image: 'carSm',
@@ -52,6 +52,7 @@ class Home extends React.Component {
       recordData: [],
       recordStatus: false,
       accelerometerData: null,
+      liveDrawOnMap: false,
     };
 
     this.toggleTypeModal = this.toggleTypeModal.bind(this);
@@ -74,13 +75,20 @@ class Home extends React.Component {
     }
 
     const { coords } = await Location.getCurrentPositionAsync();
-
+    
     this.setState({
       showMap: true,
       userLat: coords.latitude,
-      userLon: coords.longitude
+      userLon: coords.longitude,
+      liveDrawOnMap: JSON.parse(await AsyncStorage.getItem("liveDrawOnMap")),
     });
   }
+
+  _changeStatusLiveDrawOnMap = () => {
+    this.setState(prevState => ({ 
+      liveDrawOnMap: !prevState.liveDrawOnMap
+    }));
+  };
 
   toggleTypeModal() {
     this.setState(prevState => ({
@@ -101,10 +109,10 @@ class Home extends React.Component {
 
     if(!this.state.recordStatus) {
       this.setState({recordData: []});
-      Accelerometer.setUpdateInterval(1000);
+      Accelerometer.setUpdateInterval(timePeriod);
       this._interval = setInterval(() => { 
         this.triggerRecord();
-      }, 1000);
+      }, timePeriod);
     }
     else { 
       clearInterval(this._interval);
@@ -118,7 +126,7 @@ class Home extends React.Component {
       this.setState({accelerometerData: accelerometerData})
       Accelerometer.removeAllListeners()
     });
-    currentData.accelerometerData = this.state.accelerometerData;
+    currentData.accelerometerData = this.state.accelerometerData ? this.state.accelerometerData : {x:"",y:"",z:""} ;
     this.setState(prevState => ({
       recordData: [...prevState.recordData, currentData]
     }))
@@ -126,7 +134,7 @@ class Home extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { type, selectType, showMap, userLat, userLon, recordStatus, recordData } = this.state;
+    const { type, selectType, showMap, userLat, userLon, recordStatus, recordData, liveDrawOnMap } = this.state;
 
     return (
       <View style={gStyle.container}>
@@ -144,6 +152,7 @@ class Home extends React.Component {
             }}
             style={styles.map}
           >
+            {(liveDrawOnMap || (!liveDrawOnMap && !recordStatus)) && 
             <MapView.Polyline
               coordinates={
                 recordData.map((point, index) => {
@@ -155,7 +164,7 @@ class Home extends React.Component {
               }
               strokeWidth={4}
               strokeColor="blue"
-            /> 
+            /> }
           </MapView>
         )}
 
@@ -178,7 +187,7 @@ class Home extends React.Component {
             <TouchIcon
               icon={<Feather style={{alignItems: 'center', textAlign: 'center'}} name="settings" color="white" />}
               iconSize={20}
-              onPress={() => navigation.navigate('ModalSettings')}
+              onPress={() => navigation.navigate('ModalSettings', { changeStatusLiveDrawOnMap: this._changeStatusLiveDrawOnMap })}
               style={[styles.icon, styles.iconSettings]}
             />
             {!recordStatus ? 

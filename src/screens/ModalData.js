@@ -41,6 +41,8 @@ class ModalData extends React.Component {
         <Text style={styles.title}>Altitude: {item.coords.altitude}</Text>
         <Text style={styles.title}>Speed: {item.coords.speed}</Text>
         <Text style={styles.title}>Accuracy: {item.coords.accuracy}</Text>
+        <Text style={styles.title}>Accelerometer: X:{item.accelerometerData.x} Y:{item.accelerometerData.y} Z:{item.accelerometerData.z}</Text>
+        
       </View>
     )
   }
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
     flex:1, 
     flexDirection:'column',
     marginBottom: Normalize(3),
-    height: DEVICE_HEIGHT/6
+    height: DEVICE_HEIGHT/5
   },
   title: {
     fontSize: Normalize(10),

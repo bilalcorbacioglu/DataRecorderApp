@@ -42,13 +42,15 @@ const convertUniqueArray = array => {
 
 const convertStringCSV = array => {
   var csvstring = "";
-  var csvstringColumn = "Timestamp,Latitude,Longitude,Altitude,Accuracy,Speed\n";
+  var csvstringColumn = "Timestamp,Latitude,Longitude,Altitude,Accuracy,Speed,Accelerometer X, Accelerometer Y, Accelerometer Z\n";
   csvstring += csvstringColumn;
   array.forEach((item) => {
     csvstring = csvstring + item.timestamp + "," +
                 item.coords.latitude + "," + item.coords.longitude + "," +
                 item.coords.altitude + "," + item.coords.accuracy + "," +
-                item.coords.speed + "\n";
+                item.coords.speed + "," +
+                item.accelerometerData.x + "," + item.accelerometerData.y + "," +
+                item.accelerometerData.z +  "\n";
   });
   return csvstring;
 }
