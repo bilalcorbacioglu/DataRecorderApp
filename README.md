@@ -46,18 +46,23 @@ Expo CLI: `npm install -g expo-cli`
 ## Demo
 Multiple options are available to test the application.
 #### A) Direct Simulation on Android Phone via Browser
-1- Visit the address of the application  ([Data Recorder App](https://expo.io/@bilalc/DataRecorderApp)).
-2- You can start the simulation on a mobile device by clicking the **Open project in the browser link** on the right side of the screen. Sometimes you may have to wait for the queue.
-3- Once the queue is over, you will see the **Open Project using Expo** option when you scroll down a page on the mobile device. The application will open when you click this option.
+<ol>  
+<li>Visit the address of the application  ([Data Recorder App](https://expo.io/@bilalc/DataRecorderApp)).</li>  
+<li>You can start the simulation on a mobile device by clicking the **Open project in the browser link** on the right side of the screen. Sometimes you may have to wait for the queue.</li>  
+<li>Once the queue is over, you will see the **Open Project using Expo** option when you scroll down a page on the mobile device. The application will open when you click this option.</li>  
+</ol>
 
 > You can choose the following methods to get full performance.
 
 #### B) From iOS or Android Phone
-1- First of all you need to have [Expo Client](https://expo.io/tools) installed on your test device. 
-[App Store](https://itunes.apple.com/app/apple-store/id982107779) or  [Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www) / [Download IPA  2.13.0](https://dpq5q02fu5f55.cloudfront.net/Exponent-2.13.0.tar.gz) or  [Download APK  2.13.1](https://d1ahtucjixef4r.cloudfront.net/Exponent-2.13.1.apk).
-2- Open project **[Data Recorder App](https://expo.io/@bilalc/DataRecorderApp)** by scanning QR code.
-3- It will automatically redirect to the Expo application and launch the Data Recorder App.
- 
+<ol>  
+<li>First of all you need to have [Expo Client](https://expo.io/tools) installed on your test device. 
+[App Store](https://itunes.apple.com/app/apple-store/id982107779) or  [Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www) / [Download IPA  2.13.0](https://dpq5q02fu5f55.cloudfront.net/Exponent-2.13.0.tar.gz) or  [Download APK  2.13.1](https://d1ahtucjixef4r.cloudfront.net/Exponent-2.13.1.apk).</li>  
+<li>Open project **[Data Recorder App](https://expo.io/@bilalc/DataRecorderApp)** by scanning QR code.
+</li>  
+<li>It will automatically redirect to the Expo application and launch the Data Recorder App.</li> 
+</ol>
+
 #### C) Direct APK & IPA Link
 APK:  
 IPA:   
