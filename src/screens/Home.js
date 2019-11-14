@@ -1,11 +1,13 @@
 import React from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
-import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
-import * as Permissions from 'expo-permissions';
 import PropTypes from 'prop-types';
-import { colors, device, fonts, gStyle } from '../constants';
 import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Accelerometer } from 'expo-sensors';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+
+import { colors, device, fonts, gStyle } from '../constants';
 
 // components
 import RequestRideType from '../components/RequestRideType';
@@ -103,13 +105,6 @@ class Home extends React.Component {
     }
     else { 
       clearInterval(this._interval);
-      let coords = this.state.recordData.map((point, index) => {
-        return {
-          latitude: point.coords.latitude,
-          longitude: point.coords.longitude
-        }
-      })
-      this.setState({coords: coords});
     }
   }
 
@@ -140,12 +135,18 @@ class Home extends React.Component {
             }}
             style={styles.map}
           >
-            {coords.length > 0 &&
             <MapView.Polyline
-              coordinates={coords}
+              coordinates={
+                recordData.map((point, index) => {
+                  return {
+                    latitude: point.coords.latitude,
+                    longitude: point.coords.longitude
+                  }
+                })
+              }
               strokeWidth={4}
-              strokeColor="red"
-            /> }
+              strokeColor="blue"
+            /> 
           </MapView>
         )}
 

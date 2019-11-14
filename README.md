@@ -94,6 +94,6 @@ Considerations and improvements made in the application are summarized briefly.
 - CSV Export & Save (Export -> Another Application, Mail etc.) (Save -> Inapp storage)
 - Record History 
 
-- The data points are drawn in red on the map immediately after the registration is finished.
+- Data points are drawn with blue color on the map.
 - Without stopping the recording, the supplied button can be clicked. The records up to the time it was clicked can be displayed and the relevant records can be exported. Too many recordings are not a burden on the model screen. New data will continue to come as we go down.
 - Data received in the same location can be cleared if desired. (Unique data set procure)
