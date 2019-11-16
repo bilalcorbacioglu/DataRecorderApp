@@ -32,7 +32,7 @@ class History extends React.Component {
     return (
       <TouchableOpacity style={styles.card} onPress={() => this.props.navigation.navigate('RecordDetail', { fileName: item })}>
         <Text style={styles.title}>File: {item}{'\n'}</Text>
-        <Text style={styles.title}>Date: {item.replace(".csv","").split("-").join(" ")}</Text>
+        <Text style={styles.title}>Date: {moment.unix(item.replace(".csv","").substring(0,10)).format('DD MMM hh:mm:ss A')}</Text>
       </TouchableOpacity>
     )
   }
@@ -42,7 +42,7 @@ class History extends React.Component {
       const {files} = this.state;
       return (
         <View style={gStyle.container}>
-          <ModalHeader navigation={navigation} text="History"/>
+          <ModalHeader navigation={navigation} text="History" backIcon={true}/>
           <ScrollView style={gStyle.p24}>
             <FlatList
               data={files}

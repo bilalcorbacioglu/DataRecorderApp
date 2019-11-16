@@ -52,7 +52,7 @@ class ModalData extends React.Component {
     this.setState({exportOrSaveEnabled: true})
     var csvStringFormat = func.convertStringCSV(this.state.data);
 
-    const uri = FileSystem.cacheDirectory + Date.now() + ".csv";
+    const uri = FileSystem.cacheDirectory + moment().unix() + ".csv";
     await FileSystem.writeAsStringAsync(
       uri,
       csvStringFormat,
@@ -80,7 +80,7 @@ class ModalData extends React.Component {
     this.setState({exportOrSaveEnabled: true})
     var csvStringFormat = func.convertStringCSV(this.state.data);
 
-    const uri = FileSystem.documentDirectory + moment().format('DD-MMM-hh-mm-ss-A') + ".csv";
+    const uri = FileSystem.documentDirectory + moment().unix() + ".csv";
     await FileSystem.writeAsStringAsync(
       uri,
       csvStringFormat,

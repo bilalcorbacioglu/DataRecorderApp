@@ -2,6 +2,7 @@ import { createAppContainer, createStackNavigator } from 'react-navigation';
 
 // grab navigation
 import DrawerStack from './DrawerStack';
+import History from '../screens/History';
 
 // grab screens
 import RecordDetail from '../screens/RecordDetail';
@@ -14,6 +15,7 @@ import ModalRoutes from './ModalRoutes';
 const StackNavigator = createStackNavigator(
   {
     DrawerStack,
+    History,
     ModalData: {
       screen: ModalData,
       navigationOptions: {
