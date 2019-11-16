@@ -1,12 +1,13 @@
 import React from 'react';
 import { Text, View, FlatList, ScrollView, Share, Dimensions, StyleSheet, Button, AsyncStorage } from 'react-native';
-import { gStyle, fonts, colors, func } from '../constants';
+import { gStyle, fonts, colors, func, device } from '../constants';
 import * as FileSystem from 'expo-file-system';
 
 // components
 import Normalize from '../components/Normalize';
 import ModalHeader from '../components/ModalHeader';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import moment from 'moment';
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 
 class ModalData extends React.Component {
@@ -75,6 +76,20 @@ class ModalData extends React.Component {
     
   }
 
+  onSave = async () => {
+    this.setState({exportOrSaveEnabled: true})
+    var csvStringFormat = func.convertStringCSV(this.state.data);
+
+    const uri = FileSystem.documentDirectory + moment().format('DD-MMM-hh-mm-ss-A') + ".csv";
+    await FileSystem.writeAsStringAsync(
+      uri,
+      csvStringFormat,
+      { encoding:FileSystem.EncodingType.UTF8 }
+    );
+    this.setState({exportOrSaveEnabled: false})
+    this.props.navigation.navigate('History');
+  }
+
   render() {
     const { navigation } = this.props;
     const { data, recordStatus, exportOrSaveEnabled } = this.state;
@@ -84,17 +99,17 @@ class ModalData extends React.Component {
         <View style={styles.subHeader}>
           <View style={styles.subHeaderView}>
             {data.length > 0 &&
-              <TouchableOpacity disabled={exportOrSaveEnabled} onPress={this.onShare}><Text style={styles.countText}>{exportOrSaveEnabled ? "Wait ..." : "Export"}</Text></TouchableOpacity>
+              <TouchableOpacity disabled={exportOrSaveEnabled} onPress={this.onShare}><Text style={styles.subViewText}>{exportOrSaveEnabled ? "Wait ..." : "Export"}</Text></TouchableOpacity>
             }
           </View>
           <View style={styles.subHeaderView}>
             {!recordStatus && data.length > 0 ?
-              <TouchableOpacity disabled={exportOrSaveEnabled} onPress={this.onShare}><Text style={styles.countText}>{exportOrSaveEnabled ? "Wait ..." : "Save"}</Text></TouchableOpacity> 
+              <TouchableOpacity disabled={exportOrSaveEnabled} onPress={this.onSave}><Text style={styles.subViewText}>{exportOrSaveEnabled ? "Wait ..." : "Save"}</Text></TouchableOpacity> 
               : <View/>
             }
           </View>
           <View style={styles.subHeaderView}>
-            <Text style={styles.countText}>Count: {data.length}</Text>
+            <Text style={styles.subViewText}>Count: {data.length}</Text>
           </View>
         </View>
         <ScrollView style={gStyle.p24}>
@@ -125,12 +140,16 @@ const styles = StyleSheet.create({
     color: "#ffffff"
   },
   subHeader: {
-    flexDirection:'row'
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 5,
+    paddingTop: 10
   },
   subHeaderView: {
     flex: 0.3
   },
-  countText: {
+  subViewText: {
     color: colors.black50,
     fontFamily: fonts.sansProMedium,
     fontSize: 20,
