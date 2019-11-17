@@ -16,10 +16,16 @@
     <img src="https://i.ibb.co/Tqr4sSB/screenshot-2.png" width="258px" />
   </a><br>
   <a href="#">
-    <img src="https://i.ibb.co/v1MrLcx/screenshot-3.png" width="258px" />
+    <img src="https://i.ibb.co/cCRyg2X/screenshot-2.png" width="258px" />
   </a>
   <a href="#">
-    <img src="https://i.ibb.co/nwXghQ0/screenshot-4.png" width="258px" />
+    <img src="https://i.ibb.co/v1MrLcx/screenshot-3.png" width="258px" />
+  </a><br>
+  <a href="#">
+    <img src="https://i.ibb.co/jktcThS/screenshot-3.png" width="258px" />
+  </a>
+  <a href="#">
+    <img src="https://i.ibb.co/mXctYyj/screenshot-1.png" width="258px" />
   </a>
 </p>
 <br>
@@ -37,10 +43,12 @@
 
 ## Install & Build
 Install: `yarn install` | `npm install`
+
 Run Project Locally: `expo start`
 
 #### Requirements
 [NodeJS](https://nodejs.org/) (version >=10.13.0)
+
 Expo CLI: `npm install -g expo-cli`
 
 ## Demo
@@ -64,8 +72,7 @@ Multiple options are available to test the application.
 </ol>
 
 #### C) Direct APK & IPA Link
-APK:  
-IPA:   
+APK: [Download APK](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40bilalc/DataRecorderApp-3dfbdaf2bb5a45cc90f5ce33408fa942-signed.apk)
 
 
 ## Stats
@@ -75,6 +82,7 @@ IPA:
 - iOS, Android
 - React Navigation v3
 - PropTypes
+- Moment
 
 ## Features
 
@@ -83,7 +91,7 @@ Considerations and improvements made in the application are summarized briefly.
 - OTA (Over-The-Air) Deployment
 - Cache System
 - Log System
-- Google Map Request (API Request)
+- Google Map Request (API Request(In History Screen)) 
 - Preload all fonts and images
 - Responsive Screens (FontSize, Icons, Images etc.)
 - Special Navigation for iOS (Modal Navigation)
@@ -95,5 +103,6 @@ Considerations and improvements made in the application are summarized briefly.
 - Record History 
 
 - Data points are drawn with blue color on the map.
+- You can navigate through all pages in the application without interrupting record.
 - Without stopping the recording, the supplied button can be clicked. The records up to the time it was clicked can be displayed and the relevant records can be exported. Too many recordings are not a burden on the model screen. New data will continue to come as we go down.
 - Data received in the same location can be cleared if desired. (Unique data set procure)
