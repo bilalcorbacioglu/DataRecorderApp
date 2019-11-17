@@ -1,12 +1,12 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { Linking, StyleSheet, Text, View, AsyncStorage, Platform } from 'react-native';
 import MapView from 'react-native-maps';
 import PropTypes from 'prop-types';
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { Accelerometer } from 'expo-sensors';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-
+import * as IntentLauncher from 'expo-intent-launcher';
 import { colors, device, fonts, gStyle } from '../constants';
 
 // components
@@ -66,17 +66,16 @@ class Home extends React.Component {
       Permissions.LOCATION
     );
     let finalStatus = existingStatus;
-
     if (existingStatus !== 'granted') {
       const { status } = await Permissions.askAsync(Permissions.LOCATION);
       finalStatus = status;
     }
-
+    
     if (finalStatus !== 'granted') {
       return;
     }
 
-    const { coords } = await Location.getCurrentPositionAsync();
+    const { coords } = await Location.getCurrentPositionAsync({enableHighAccuracy:true});
     
     this.setState({
       showMap: true,
@@ -122,7 +121,7 @@ class Home extends React.Component {
   }
 
   triggerRecord = async () => {
-    let currentData = await Location.getCurrentPositionAsync();
+    let currentData = await Location.getCurrentPositionAsync({enableHighAccuracy:true});
     
     this._subscription = Accelerometer.addListener(accelerometerData => {
       this.setState({accelerometerData: accelerometerData})
@@ -173,10 +172,14 @@ class Home extends React.Component {
         {!showMap && (
           <View style={styles.containerNoLocation}>
             <Text style={styles.textLocationNeeded}>
-              We need your location data...
+              We need location and internet access...
             </Text>
             <TouchText
-              onPress={() => Linking.openURL('app-settings:')}
+              onPress={() => {
+                Platform.OS === 'ios' ? 
+                Linking.openURL('app-settings:') :
+                IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS);
+              }}
               style={styles.btnGoTo}
               styleText={styles.btnGoToText}
               text="Go To Permissions"

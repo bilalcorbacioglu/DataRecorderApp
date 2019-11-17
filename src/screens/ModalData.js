@@ -21,7 +21,7 @@ class ModalData extends React.Component {
 
   componentDidMount = async () => {
     this.setState({
-      data: this.props.navigation.getParam("data", null).reverse(),
+      data: this.props.navigation.getParam("data", null),
       recordStatus: this.props.navigation.getParam("recordStatus",null),
     })
 
