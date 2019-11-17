@@ -208,7 +208,7 @@ class Home extends React.Component {
             <TouchIcon
               icon={<Feather style={{alignItems: 'center', textAlign: 'center'}} name="database" color="white" />}
               iconSize={20}
-              onPress={() => this.props.navigation.navigate('ModalData', {data: recordData.reverse(), recordStatus: recordStatus})}
+              onPress={() => this.props.navigation.navigate('ModalData', {data: recordData, recordStatus: recordStatus})}
               style={[styles.icon, styles.iconShowData]}
             />
           </View>
