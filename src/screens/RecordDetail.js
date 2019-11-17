@@ -39,10 +39,8 @@ class RecordDetail extends React.Component {
   }
 
   async getLocationAddress(latitude, longitude) {
-    console.log(latitude, longitude);
     let result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLEMAPSAPICODE}`)
     let resultJson = await result.json();
-    console.log(resultJson.results);
     return resultJson.results[0].formatted_address;
   }
 

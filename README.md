@@ -72,7 +72,7 @@ Multiple options are available to test the application.
 </ol>
 
 #### C) Direct APK & IPA Link
-APK: [Download APK](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40bilalc/DataRecorderApp-3dfbdaf2bb5a45cc90f5ce33408fa942-signed.apk)
+APK: [Download APK](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40bilalc/DataRecorderApp-3d4b2ef5deb04d68a61b85e84769951e-signed.apk)
 
 
 ## Stats
