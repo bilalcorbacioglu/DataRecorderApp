@@ -11,23 +11,41 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 const { PROVIDER_GOOGLE } = MapView;
+const GOOGLEMAPSAPICODE = 'AIzaSyAqv1HRHa0zSN2NmX-CbraN50VovMuXDfo';
 class RecordDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       recordData: [],
       fileName: "",
+      fromAddress: "",
+      toAddress: ""
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const fileName = this.props.navigation.getParam("fileName", null);
     this.setState({fileName: fileName})
-
-    FileSystem.readAsStringAsync(FileSystem.documentDirectory+fileName).then(string=>{
+    await FileSystem.readAsStringAsync(FileSystem.documentDirectory+fileName).then(string=>{
       this.setState({recordData: func.csvStringToObject(string)});
-   })
+    })
+    
+    if (this.state.recordData.length > 0) {
+      const fromAddress = await this.getLocationAddress(this.state.recordData[0].Latitude,this.state.recordData[0].Longitude);
+      const toAddress = await this.getLocationAddress(this.state.recordData[this.state.recordData.length-1].Latitude,this.state.recordData[this.state.recordData.length-1].Longitude);
+      this.setState({fromAddress: fromAddress});
+      this.setState({toAddress: toAddress});
+    }
   }
+
+  async getLocationAddress(latitude, longitude) {
+    console.log(latitude, longitude);
+    let result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLEMAPSAPICODE}`)
+    let resultJson = await result.json();
+    console.log(resultJson.results);
+    return resultJson.results[0].formatted_address;
+  }
+
 
   onShare = async () => {
     const uri = FileSystem.documentDirectory + this.state.fileName;
@@ -49,24 +67,35 @@ class RecordDetail extends React.Component {
 
   render() {
       const {navigation} = this.props;
-      const {recordData, fileName} = this.state;
+      const {recordData, fromAddress, toAddress} = this.state;
+      const recordDataLength = recordData.length;
       return (
         <View style={gStyle.container}>
           <ModalHeader navigation={navigation} text="Record Detail" backIcon={true}/>
+          {recordDataLength > 0 && 
+            <View style={styles.subHeader}>
+              <View style={styles.subHeaderView}>
+                <Text style={styles.subViewText}>From: {fromAddress}</Text>
+              </View>
+              <View style={styles.subHeaderView}>
+                <Text style={styles.subViewText}>To: {toAddress}</Text>
+              </View>
+            </View>
+          }
           <View style={styles.subHeader}>
-          <View style={styles.subHeaderView}>
-                <TouchableOpacity onPress={this.onShare}><Text style={styles.subViewText}>Export</Text></TouchableOpacity>
+            <View style={styles.subHeaderView}>
+              <TouchableOpacity onPress={this.onShare}><Text style={styles.subViewText}>Export</Text></TouchableOpacity>
             </View>
             <View style={styles.subHeaderView}>
-              <Text style={styles.subViewText}>Count: {recordData.length}</Text>
+              <Text style={styles.subViewText}>Count: {recordDataLength}</Text>
             </View>
           </View>
-          {recordData.length > 0 && 
+          {recordDataLength > 0 && 
             <MapView
               provider={PROVIDER_GOOGLE}
               initialRegion={{
-                latitude: recordData[0].Latitude,
-                longitude: recordData[0].Longitude,
+                latitude: Number(recordData[0].Latitude),
+                longitude: Number(recordData[0].Longitude),
                 latitudeDelta: 0.009,
                 longitudeDelta: 0.009
               }}

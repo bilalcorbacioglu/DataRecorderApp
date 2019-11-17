@@ -14,7 +14,9 @@ import RequestRideType from '../components/RequestRideType';
 import SelectRideType from '../components/SelectRideType';
 import TouchIcon from '../components/TouchIcon';
 import TouchText from '../components/TouchText';
-import Information from '../components/Information';
+import InformationCar from '../components/InformationCar';
+import InformationBike from '../components/InformationBike';
+
 
 // icons
 import SvgMenu from '../components/icons/Svg.Menu';
@@ -236,7 +238,8 @@ class Home extends React.Component {
           visible={selectType}
         />
 
-        {type === 'car' && <Information />}
+        {type === 'car' && <InformationCar />}
+        {type === 'bike' && <InformationBike />}
       </View>
     );
   }

@@ -29,7 +29,10 @@ const StackNavigator = createStackNavigator(
       }
     },
     RecordDetail: {
-      screen: RecordDetail
+      screen: RecordDetail,
+      navigationOptions: {
+        gesturesEnabled: false
+      }
     }
   },
   {

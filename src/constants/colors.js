@@ -6,6 +6,7 @@ export default {
   green: '#49a061',
   red: '#ff0000',
   orange: '#f6a633',
+  turquoise: '#39c9bb',
 
   black20: 'rgba(0, 0, 0, 0.2)',
   black40: 'rgba(0, 0, 0, 0.4)',

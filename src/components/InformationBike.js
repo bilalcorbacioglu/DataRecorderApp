@@ -1,25 +1,25 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, device, fonts } from '../constants';
-import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
-const Information = () => (
+const InformationBike = () => (
   <View style={styles.container}>
     <View style={styles.containerBanner}>
-      <Text style={styles.bannerText}>Welcome Back Bilal!</Text>
-      <Text style={styles.bannerNearDistance}>After 20Km</Text>
+      <Text style={styles.bannerText}>Elapsed Time: 01:22:23</Text>
+      <Text style={styles.bannerNearDistance}>Cloudy · 44°F</Text>
     </View>
     <View style={styles.containerInput}>
       <View style={styles.containerSquare}>
         <View style={styles.square} />
       </View>
-      <Text style={styles.text}>Road Damages / Rantaväylä, Jyväskylä</Text>
+      <Text style={styles.text}>1881 Calories burned</Text>
       <View style={styles.containerIcon}>
-        <AntDesign 
+        <MaterialCommunityIcons 
           style={{alignItems: 'center', textAlign: 'center'}} 
-          name="warning" 
-          color="red" 
+          name="bike" 
+          color="green" 
           size={23} 
         />
       </View>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     width: device.width - 40
   },
   containerBanner: {
-    backgroundColor: colors.orange,
+    backgroundColor: colors.turquoise,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     flexDirection: 'row',
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Information;
+export default InformationBike;
