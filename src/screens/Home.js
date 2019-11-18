@@ -1,8 +1,15 @@
 import React from 'react';
-import { Linking, StyleSheet, Text, View, AsyncStorage, Platform } from 'react-native';
+import {
+  Linking,
+  StyleSheet,
+  Text,
+  View,
+  AsyncStorage,
+  Platform
+} from 'react-native';
 import MapView from 'react-native-maps';
 import PropTypes from 'prop-types';
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Accelerometer } from 'expo-sensors';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -16,7 +23,6 @@ import TouchIcon from '../components/TouchIcon';
 import TouchText from '../components/TouchText';
 import InformationCar from '../components/InformationCar';
 import InformationBike from '../components/InformationBike';
-
 
 // icons
 import SvgMenu from '../components/icons/Svg.Menu';
@@ -55,6 +61,7 @@ class Home extends React.Component {
       recordStatus: false,
       accelerometerData: null,
       liveDrawOnMap: false,
+      locationPermission: false
     };
 
     this.toggleTypeModal = this.toggleTypeModal.bind(this);
@@ -70,23 +77,27 @@ class Home extends React.Component {
       const { status } = await Permissions.askAsync(Permissions.LOCATION);
       finalStatus = status;
     }
-    
+
     if (finalStatus !== 'granted') {
       return;
     }
 
-    const { coords } = await Location.getCurrentPositionAsync({enableHighAccuracy:true});
-    
+    this.setState({ locationPermission: true });
+
+    const { coords } = await Location.getCurrentPositionAsync({
+      enableHighAccuracy: true
+    });
+
     this.setState({
       showMap: true,
       userLat: coords.latitude,
       userLon: coords.longitude,
-      liveDrawOnMap: JSON.parse(await AsyncStorage.getItem("liveDrawOnMap")),
+      liveDrawOnMap: JSON.parse(await AsyncStorage.getItem('liveDrawOnMap'))
     });
   }
 
   _changeStatusLiveDrawOnMap = () => {
-    this.setState(prevState => ({ 
+    this.setState(prevState => ({
       liveDrawOnMap: !prevState.liveDrawOnMap
     }));
   };
@@ -102,40 +113,53 @@ class Home extends React.Component {
       type
     });
   }
-  
+
   async toggleRecord() {
     this.setState(prevState => ({
       recordStatus: !prevState.recordStatus
-    }))
+    }));
 
-    if(!this.state.recordStatus) {
-      this.setState({recordData: []});
+    if (!this.state.recordStatus) {
+      this.setState({ recordData: [] });
       Accelerometer.setUpdateInterval(timePeriod);
-      this._interval = setInterval(() => { 
+      this._interval = setInterval(() => {
         this.triggerRecord();
       }, timePeriod);
-    }
-    else { 
+    } else {
       clearInterval(this._interval);
     }
   }
 
   triggerRecord = async () => {
-    let currentData = await Location.getCurrentPositionAsync({enableHighAccuracy:true});
-    
-    this._subscription = Accelerometer.addListener(accelerometerData => {
-      this.setState({accelerometerData: accelerometerData})
-      Accelerometer.removeAllListeners()
+    let currentData = await Location.getCurrentPositionAsync({
+      enableHighAccuracy: true
     });
-    currentData.accelerometerData = this.state.accelerometerData ? this.state.accelerometerData : {x:"",y:"",z:""} ;
+
+    this._subscription = Accelerometer.addListener(accelerometerData => {
+      this.setState({ accelerometerData: accelerometerData });
+      Accelerometer.removeAllListeners();
+    });
+    currentData.accelerometerData = this.state.accelerometerData
+      ? this.state.accelerometerData
+      : { x: '', y: '', z: '' };
     this.setState(prevState => ({
       recordData: [...prevState.recordData, currentData]
-    }))
-  }
+    }));
+  };
 
   render() {
     const { navigation } = this.props;
-    const { type, selectType, showMap, userLat, userLon, recordStatus, recordData, liveDrawOnMap } = this.state;
+    const {
+      type,
+      selectType,
+      showMap,
+      userLat,
+      userLon,
+      recordStatus,
+      recordData,
+      liveDrawOnMap,
+      locationPermission
+    } = this.state;
 
     return (
       <View style={gStyle.container}>
@@ -153,67 +177,109 @@ class Home extends React.Component {
             }}
             style={styles.map}
           >
-            {(liveDrawOnMap || (!liveDrawOnMap && !recordStatus)) && 
-            <MapView.Polyline
-              coordinates={
-                recordData.map((point, index) => {
+            {(liveDrawOnMap || (!liveDrawOnMap && !recordStatus)) && (
+              <MapView.Polyline
+                coordinates={recordData.map((point, index) => {
                   return {
                     latitude: point.coords.latitude,
                     longitude: point.coords.longitude
-                  }
-                })
-              }
-              strokeWidth={4}
-              strokeColor="blue"
-            /> }
+                  };
+                })}
+                strokeWidth={4}
+                strokeColor="blue"
+              />
+            )}
           </MapView>
         )}
 
         {!showMap && (
           <View style={styles.containerNoLocation}>
-            <Text style={styles.textLocationNeeded}>
-              We need location and internet access...
-            </Text>
-            <TouchText
-              onPress={() => {
-                Platform.OS === 'ios' ? 
-                Linking.openURL('app-settings:') :
-                IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS);
-              }}
-              style={styles.btnGoTo}
-              styleText={styles.btnGoToText}
-              text="Go To Permissions"
-            />
+            {!locationPermission ? (
+              <View>
+                <Text style={styles.textLocationNeeded}>
+                  We need location and internet access...
+                </Text>
+                <TouchText
+                  onPress={() => {
+                    Platform.OS === 'ios'
+                      ? Linking.openURL('app-settings:')
+                      : IntentLauncher.startActivityAsync(
+                          IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS
+                        );
+                  }}
+                  style={styles.btnGoTo}
+                  styleText={styles.btnGoToText}
+                  text="Go To Permissions"
+                />
+              </View>
+            ) : (
+              <Text style={styles.textLocationNeeded}>
+                We are trying to find your location...
+              </Text>
+            )}
           </View>
         )}
 
         <View style={styles.rightContainer}>
           <View>
             <TouchIcon
-              icon={<Feather style={{alignItems: 'center', textAlign: 'center'}} name="settings" color="white" />}
+              icon={
+                <Feather
+                  style={{ alignItems: 'center', textAlign: 'center' }}
+                  name="settings"
+                  color="white"
+                />
+              }
               iconSize={20}
-              onPress={() => navigation.navigate('ModalSettings', { changeStatusLiveDrawOnMap: this._changeStatusLiveDrawOnMap })}
+              onPress={() =>
+                navigation.navigate('ModalSettings', {
+                  changeStatusLiveDrawOnMap: this._changeStatusLiveDrawOnMap
+                })
+              }
               style={[styles.icon, styles.iconSettings]}
             />
-            {!recordStatus ? 
+            {!recordStatus ? (
+              <TouchIcon
+                icon={
+                  <MaterialIcons
+                    style={{ alignItems: 'center', textAlign: 'center' }}
+                    name="play-arrow"
+                    color="white"
+                  />
+                }
+                iconSize={20}
+                onPress={() => this.toggleRecord()}
+                style={[styles.icon, styles.iconPlay]}
+              />
+            ) : (
+              <TouchIcon
+                icon={
+                  <MaterialIcons
+                    style={{ alignItems: 'center', textAlign: 'center' }}
+                    name="stop"
+                    color="white"
+                  />
+                }
+                iconSize={20}
+                onPress={() => this.toggleRecord()}
+                style={[styles.icon, styles.iconStop]}
+              />
+            )}
             <TouchIcon
-              icon={<MaterialIcons style={{alignItems: 'center', textAlign: 'center'}} name="play-arrow" color="white" />}
+              icon={
+                <Feather
+                  style={{ alignItems: 'center', textAlign: 'center' }}
+                  name="database"
+                  color="white"
+                />
+              }
               iconSize={20}
-              onPress={() => this.toggleRecord()}
-              style={[styles.icon, styles.iconPlay]}
-            />
-            :
-            <TouchIcon
-              icon={<MaterialIcons style={{alignItems: 'center', textAlign: 'center'}} name="stop" color="white" />}
-              iconSize={20}
-              onPress={() => this.toggleRecord()}
-              style={[styles.icon, styles.iconStop]}
-            />
-            }
-            <TouchIcon
-              icon={<Feather style={{alignItems: 'center', textAlign: 'center'}} name="database" color="white" />}
-              iconSize={20}
-              onPress={() => this.props.navigation.navigate('ModalData', {data: recordData, recordStatus: recordStatus})}
+              onPress={() =>
+                this.props.navigation.navigate('ModalData', {
+                  data: recordData,
+                  recordStatus: recordStatus
+                })
+              }
               style={[styles.icon, styles.iconShowData]}
             />
           </View>
@@ -314,7 +380,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue
   },
   iconPlay: {
-    backgroundColor: colors.green    
+    backgroundColor: colors.green
   },
   iconStop: {
     backgroundColor: colors.red

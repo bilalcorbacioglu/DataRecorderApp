@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, device, fonts } from '../constants';
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const InformationBike = () => (
   <View style={styles.container}>
@@ -16,11 +15,11 @@ const InformationBike = () => (
       </View>
       <Text style={styles.text}>1881 Calories burned</Text>
       <View style={styles.containerIcon}>
-        <MaterialCommunityIcons 
-          style={{alignItems: 'center', textAlign: 'center'}} 
-          name="bike" 
-          color="green" 
-          size={23} 
+        <MaterialCommunityIcons
+          style={{ alignItems: 'center', textAlign: 'center' }}
+          name="bike"
+          color="green"
+          size={23}
         />
       </View>
     </View>

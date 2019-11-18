@@ -3,9 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { colors, device, fonts, gStyle } from '../constants';
 import SvgClose from './icons/Svg.Close';
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons';
 
-const ModalHeader = ({ navigation, style, backIcon ,text }) => (
+const ModalHeader = ({ navigation, style, backIcon, text }) => (
   <View style={[styles.container, style]}>
     <TouchableOpacity
       activeOpacity={gStyle.activeOpacity}
@@ -13,9 +13,11 @@ const ModalHeader = ({ navigation, style, backIcon ,text }) => (
       onPress={() => navigation.goBack(null)}
       style={styles.containerIconRight}
     >
-      {backIcon ? <Ionicons name={'ios-arrow-back'} size={25} color={colors.black}/>
-      : <SvgClose />
-      }
+      {backIcon ? (
+        <Ionicons name={'ios-arrow-back'} size={25} color={colors.black} />
+      ) : (
+        <SvgClose />
+      )}
     </TouchableOpacity>
     {text && <Text style={styles.header}>{text}</Text>}
   </View>

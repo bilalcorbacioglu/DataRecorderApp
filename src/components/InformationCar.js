@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, device, fonts } from '../constants';
-import { AntDesign } from "@expo/vector-icons";
-
+import { AntDesign } from '@expo/vector-icons';
 
 const InformationCar = () => (
   <View style={styles.container}>
@@ -16,11 +15,11 @@ const InformationCar = () => (
       </View>
       <Text style={styles.text}>Road Damages / Rantaväylä, Jyväskylä</Text>
       <View style={styles.containerIcon}>
-        <AntDesign 
-          style={{alignItems: 'center', textAlign: 'center'}} 
-          name="warning" 
-          color="red" 
-          size={23} 
+        <AntDesign
+          style={{ alignItems: 'center', textAlign: 'center' }}
+          name="warning"
+          color="red"
+          size={23}
         />
       </View>
     </View>

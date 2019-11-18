@@ -10,7 +10,6 @@ const ModalBackdrop = ({ onPress }) => (
 );
 
 ModalBackdrop.propTypes = {
-  // required
   onPress: PropTypes.func.isRequired
 };
 

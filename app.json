@@ -4,11 +4,7 @@
     "slug": "DataRecorderApp",
     "privacy": "public",
     "sdkVersion": "35.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "githubUrl": "https://github.com/bilalcorbacioglu/DataRecorderApp",
     "version": "0.0.1",
     "orientation": "portrait",
@@ -21,9 +17,7 @@
     "updates": {
       "fallbackToCacheTimeout": 4
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "package": "com.ficonicsolutions.datarecorder",
       "versionCode": 1
