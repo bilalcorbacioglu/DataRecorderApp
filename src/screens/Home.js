@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Linking,
-  StyleSheet,
-  Text,
-  View,
-  AsyncStorage
-} from 'react-native';
+import { Linking, StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import MapView from 'react-native-maps';
 import PropTypes from 'prop-types';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
@@ -68,31 +62,35 @@ class Home extends React.Component {
   }
 
   async componentDidMount() {
-    const { status: existingStatus } = await Permissions.getAsync(
-      Permissions.LOCATION
-    );
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.LOCATION);
-      finalStatus = status;
+    try {
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.LOCATION
+      );
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION);
+        finalStatus = status;
+      }
+
+      if (finalStatus !== 'granted') {
+        return;
+      }
+
+      this.setState({ locationPermission: true });
+
+      const { coords } = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: true
+      });
+
+      this.setState({
+        showMap: true,
+        userLat: coords.latitude,
+        userLon: coords.longitude,
+        liveDrawOnMap: JSON.parse(await AsyncStorage.getItem('liveDrawOnMap'))
+      });
+    } catch (err) {
+      //Log -> Write to file or API Req
     }
-
-    if (finalStatus !== 'granted') {
-      return;
-    }
-
-    this.setState({ locationPermission: true });
-
-    const { coords } = await Location.getCurrentPositionAsync({
-      enableHighAccuracy: true
-    });
-
-    this.setState({
-      showMap: true,
-      userLat: coords.latitude,
-      userLon: coords.longitude,
-      liveDrawOnMap: JSON.parse(await AsyncStorage.getItem('liveDrawOnMap'))
-    });
   }
 
   _changeStatusLiveDrawOnMap = () => {
@@ -130,20 +128,24 @@ class Home extends React.Component {
   }
 
   triggerRecord = async () => {
-    let currentData = await Location.getCurrentPositionAsync({
-      enableHighAccuracy: true
-    });
+    try {
+      let currentData = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: true
+      });
 
-    this._subscription = Accelerometer.addListener(accelerometerData => {
-      this.setState({ accelerometerData: accelerometerData });
-      Accelerometer.removeAllListeners();
-    });
-    currentData.accelerometerData = this.state.accelerometerData
-      ? this.state.accelerometerData
-      : { x: '', y: '', z: '' };
-    this.setState(prevState => ({
-      recordData: [...prevState.recordData, currentData]
-    }));
+      this._subscription = Accelerometer.addListener(accelerometerData => {
+        this.setState({ accelerometerData: accelerometerData });
+        Accelerometer.removeAllListeners();
+      });
+      currentData.accelerometerData = this.state.accelerometerData
+        ? this.state.accelerometerData
+        : { x: '', y: '', z: '' };
+      this.setState(prevState => ({
+        recordData: [...prevState.recordData, currentData]
+      }));
+    } catch (error) {
+      //Log -> Write to file or API Req
+    }
   };
 
   render() {

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Dimensions,
-  Share
-} from 'react-native';
+import { Text, View, StyleSheet, Dimensions, Share } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { gStyle, colors, func, device, fonts } from '../constants';
 import MapView from 'react-native-maps';
@@ -58,11 +52,15 @@ class RecordDetail extends React.Component {
   }
 
   async getLocationAddress(latitude, longitude) {
-    let result = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLEMAPSAPICODE}`
-    );
-    let resultJson = await result.json();
-    return resultJson.results[0].formatted_address;
+    try {
+      let result = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLEMAPSAPICODE}`
+      );
+      let resultJson = await result.json();
+      return resultJson.results[0].formatted_address;
+    } catch (error) {
+      //Log -> Write to file or API Req
+    }
   }
 
   onShare = async () => {

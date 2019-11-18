@@ -15,21 +15,29 @@ class ModalSettings extends React.Component {
     };
   }
   componentDidMount = async () => {
-    const uniqueDataEnabled = JSON.parse(
-      await AsyncStorage.getItem('uniqueDataEnabled')
-    );
-    const liveDrawOnMap = JSON.parse(
-      await AsyncStorage.getItem('liveDrawOnMap')
-    );
+    try {
+      const uniqueDataEnabled = JSON.parse(
+        await AsyncStorage.getItem('uniqueDataEnabled')
+      );
+      const liveDrawOnMap = JSON.parse(
+        await AsyncStorage.getItem('liveDrawOnMap')
+      );
 
-    this.setState({
-      uniqueDataEnabled: uniqueDataEnabled,
-      liveDrawOnMap: liveDrawOnMap
-    });
+      this.setState({
+        uniqueDataEnabled: uniqueDataEnabled,
+        liveDrawOnMap: liveDrawOnMap
+      });
+    } catch (error) {
+      //Log -> Write to file or API Req
+    }
   };
   changeAsyncStorage = async (key, value) => {
-    await AsyncStorage.setItem(key, JSON.stringify(value));
-    this.setState({ [key]: value });
+    try {
+      await AsyncStorage.setItem(key, JSON.stringify(value));
+      this.setState({ [key]: value });
+    } catch (error) {
+      //Log -> Write to file or API Req
+    }
   };
   render() {
     const { navigation } = this.props;

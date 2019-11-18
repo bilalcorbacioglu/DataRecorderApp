@@ -34,11 +34,15 @@ class ModalData extends React.Component {
       recordStatus: this.props.navigation.getParam('recordStatus', null)
     });
 
-    const uniqueDataEnabled = JSON.parse(
-      await AsyncStorage.getItem('uniqueDataEnabled')
-    );
-    if (uniqueDataEnabled)
-      this.setState({ data: func.convertUniqueArray(this.state.data) });
+    try {
+      const uniqueDataEnabled = JSON.parse(
+        await AsyncStorage.getItem('uniqueDataEnabled')
+      );
+      if (uniqueDataEnabled)
+        this.setState({ data: func.convertUniqueArray(this.state.data) });
+    } catch (error) {
+      //Log -> Write to file or API Req
+    }
   };
 
   renderItem = ({ item, index }) => {
@@ -65,40 +69,48 @@ class ModalData extends React.Component {
   };
 
   onShare = async () => {
-    this.setState({ exportOrSaveEnabled: true });
-    var csvStringFormat = func.convertStringCSV(this.state.data);
+    try {
+      this.setState({ exportOrSaveEnabled: true });
+      var csvStringFormat = func.convertStringCSV(this.state.data);
 
-    const uri = FileSystem.cacheDirectory + moment().unix() + '.csv';
-    await FileSystem.writeAsStringAsync(uri, csvStringFormat, {
-      encoding: FileSystem.EncodingType.UTF8
-    });
-    this.setState({ exportOrSaveEnabled: false });
+      const uri = FileSystem.cacheDirectory + moment().unix() + '.csv';
+      await FileSystem.writeAsStringAsync(uri, csvStringFormat, {
+        encoding: FileSystem.EncodingType.UTF8
+      });
+      this.setState({ exportOrSaveEnabled: false });
 
-    const result = await Share.share({
-      url: uri
-    });
+      const result = await Share.share({
+        url: uri
+      });
 
-    if (result.action === Share.sharedAction) {
-      if (result.activityType) {
-        // shared with activity type of result.activityType
-      } else {
-        // shared
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
       }
-    } else if (result.action === Share.dismissedAction) {
-      // dismissed
+    } catch (error) {
+      //Log -> Write to file or API Req
     }
   };
 
   onSave = async () => {
-    this.setState({ exportOrSaveEnabled: true });
-    var csvStringFormat = func.convertStringCSV(this.state.data);
+    try {
+      this.setState({ exportOrSaveEnabled: true });
+      var csvStringFormat = func.convertStringCSV(this.state.data);
 
-    const uri = FileSystem.documentDirectory + moment().unix() + '.csv';
-    await FileSystem.writeAsStringAsync(uri, csvStringFormat, {
-      encoding: FileSystem.EncodingType.UTF8
-    });
-    this.setState({ exportOrSaveEnabled: false });
-    this.props.navigation.navigate('History');
+      const uri = FileSystem.documentDirectory + moment().unix() + '.csv';
+      await FileSystem.writeAsStringAsync(uri, csvStringFormat, {
+        encoding: FileSystem.EncodingType.UTF8
+      });
+      this.setState({ exportOrSaveEnabled: false });
+      this.props.navigation.navigate('History');
+    } catch (error) {
+      //Log -> Write to file or API Req
+    }
   };
 
   render() {

@@ -55,9 +55,8 @@ Expo CLI: `npm install -g expo-cli`
 Multiple options are available to test the application.
 #### A) Direct Simulation on Android Phone via Browser
 <ol>  
-  <li>Visit the address of the application (<a href="https://expo.io/appetize-simulator?url=https://expo.io/@bilalc/DataRecorderApp&appetizeCode=adfhadfh">Data Recorder App</a>).</li>  
-<li>You can start the simulation on a mobile device by clicking the <strong>Open project using Expo</strong> on the bottom side of the screen. *Sometimes you may have to wait for the queue.</li>
-<li>Once the queue is over, you will see the <strong>Open Project using Expo</strong> option when you scroll down a page on the mobile device. The application will open when you click this option.</li>
+  <li>Visit the address of the application (<a href="https://expo.io/appetize-simulator?url=https://expo.io/@bilalc/DataRecorderApp&appetizeCode=adfhadfh">Data Recorder App</a>). *Sometimes you may have to wait for the queue.</li>  
+<li>You can start the simulation on a mobile device by clicking the <strong>Open project using Expo</strong> on the bottom side of the screen. </li>
 </ol>
 
 > You can choose the following method to get full performance.
