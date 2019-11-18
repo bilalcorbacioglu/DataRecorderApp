@@ -3,14 +3,10 @@ import {
   Text,
   View,
   StyleSheet,
-  Card,
-  ScrollView,
-  FlatList,
   Dimensions,
   Share
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import moment from 'moment';
 import { gStyle, colors, func, device, fonts } from '../constants';
 import MapView from 'react-native-maps';
 
@@ -137,7 +133,7 @@ class RecordDetail extends React.Component {
                 };
               })}
               strokeWidth={4}
-              strokeColor="blue"
+              strokeColor={colors.blue}
             />
           </MapView>
         )}
@@ -152,14 +148,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginBottom: Normalize(3),
     height: DEVICE_HEIGHT / 8,
-    backgroundColor: 'gray'
+    backgroundColor: colors.grey
   },
   title: {
     fontSize: Normalize(13),
     fontWeight: 'bold',
     fontStyle: 'normal',
     textAlign: 'center',
-    color: '#ffffff'
+    color: colors.white
   },
   map: {
     height: device.height / 1.3,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import Constants from 'expo-constants';
 import { colors, device, fonts } from '../constants';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -88,7 +88,6 @@ const CustomDrawerContent = ({ navigation }) => (
 );
 
 CustomDrawerContent.propTypes = {
-  // required
   navigation: PropTypes.object.isRequired
 };
 
@@ -108,16 +107,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sansProRegular,
     fontSize: 20,
     textAlign: 'right'
-  },
-  list: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    padding: 40
-  },
-  listItem: {
-    flex: 1,
-    flexDirection: 'row'
   }
 });
 

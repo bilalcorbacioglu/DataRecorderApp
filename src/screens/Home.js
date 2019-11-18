@@ -4,8 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage,
-  Platform
+  AsyncStorage
 } from 'react-native';
 import MapView from 'react-native-maps';
 import PropTypes from 'prop-types';
@@ -201,7 +200,7 @@ class Home extends React.Component {
                 </Text>
                 <TouchText
                   onPress={() => {
-                    Platform.OS === 'ios'
+                    device.iOS === 'ios'
                       ? Linking.openURL('app-settings:')
                       : IntentLauncher.startActivityAsync(
                           IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS

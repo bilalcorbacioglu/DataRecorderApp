@@ -10,7 +10,7 @@ import {
 import * as FileSystem from 'expo-file-system';
 import moment from 'moment';
 
-import { gStyle, colors } from '../constants';
+import { gStyle } from '../constants';
 
 import Normalize from '../components/Normalize';
 import ModalHeader from '../components/ModalHeader';

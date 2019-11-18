@@ -20,11 +20,9 @@ TouchText.defaultProps = {
 };
 
 TouchText.propTypes = {
-  // required
   text: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
 
-  // optional
   style: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.number,

@@ -7,7 +7,6 @@ import {
   Share,
   Dimensions,
   StyleSheet,
-  Button,
   AsyncStorage
 } from 'react-native';
 import { gStyle, fonts, colors, func, device } from '../constants';
