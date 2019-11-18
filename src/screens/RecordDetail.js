@@ -8,6 +8,7 @@ import MapView from 'react-native-maps';
 import Normalize from '../components/Normalize';
 import ModalHeader from '../components/ModalHeader';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as Location from 'expo-location';
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 const { PROVIDER_GOOGLE } = MapView;
@@ -24,6 +25,7 @@ class RecordDetail extends React.Component {
   }
 
   async componentDidMount() {
+    
     const fileName = this.props.navigation.getParam("fileName", null);
     this.setState({fileName: fileName})
     await FileSystem.readAsStringAsync(FileSystem.documentDirectory+fileName).then(string=>{
@@ -31,6 +33,11 @@ class RecordDetail extends React.Component {
     })
     
     if (this.state.recordData.length > 0) {
+      // Alternative Way
+      // Location.setApiKey(GOOGLEMAPSAPICODE);
+      // Location.reverseGeocodeAsync({latitude: Number(this.state.recordData[0].Latitude), longitude: Number(this.state.recordData[0].Longitude)}).then(data=>{
+      //   //ignored
+      // })
       const fromAddress = await this.getLocationAddress(this.state.recordData[0].Latitude,this.state.recordData[0].Longitude);
       const toAddress = await this.getLocationAddress(this.state.recordData[this.state.recordData.length-1].Latitude,this.state.recordData[this.state.recordData.length-1].Longitude);
       this.setState({fromAddress: fromAddress});
