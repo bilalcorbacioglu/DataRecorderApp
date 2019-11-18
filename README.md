@@ -37,7 +37,7 @@
 ## Table of Contents
 
 - [Install & Build Project](#install--build)
-- [Demo & Direct APK Link](#demo)
+- [Demo](#demo)
 - [Stats](#stats)
 - [Features](#features)
 
@@ -55,12 +55,12 @@ Expo CLI: `npm install -g expo-cli`
 Multiple options are available to test the application.
 #### A) Direct Simulation on Android Phone via Browser
 <ol>  
-  <li>Visit the address of the application (<a href="https://expo.io/@bilalc/DataRecorderApp">Data Recorder App</a>).</li>  
-<li>You can start the simulation on a mobile device by clicking the <strong>Open project in the browser link</strong> on the right side of the screen. Sometimes you may have to wait for the queue.</li>  
-<li>Once the queue is over, you will see the <strong>Open Project using Expo</strong> option when you scroll down a page on the mobile device. The application will open when you click this option.</li>  
+  <li>Visit the address of the application (<a href="https://expo.io/appetize-simulator?url=https://expo.io/@bilalc/DataRecorderApp&appetizeCode=adfhadfh">Data Recorder App</a>).</li>  
+<li>You can start the simulation on a mobile device by clicking the <strong>Open project using Expo</strong> on the bottom side of the screen. *Sometimes you may have to wait for the queue.</li>
+<li>Once the queue is over, you will see the <strong>Open Project using Expo</strong> option when you scroll down a page on the mobile device. The application will open when you click this option.</li>
 </ol>
 
-> You can choose the following methods to get full performance.
+> You can choose the following method to get full performance.
 
 #### B) From iOS or Android Phone
 <ol>  
@@ -70,10 +70,6 @@ Multiple options are available to test the application.
 </li>
 <li>It will automatically redirect to the Expo application and launch the Data Recorder App.</li> 
 </ol>
-
-#### C) Direct APK & IPA Link
-APK: [Download APK](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40bilalc/DataRecorderApp-3d4b2ef5deb04d68a61b85e84769951e-signed.apk)
-
 
 ## Stats
 
@@ -91,7 +87,7 @@ Considerations and improvements made in the application are summarized briefly.
 - OTA (Over-The-Air) Deployment
 - Cache System
 - Log System
-- Google Map Request (API Request(In History Screen)) 
+- Google Map Request (API Request(In RecordDetail Screen)) 
 - Preload all fonts and images
 - Responsive Screens (FontSize, Icons, Images etc.)
 - Special Navigation for iOS (Modal Navigation)
